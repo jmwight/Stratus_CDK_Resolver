@@ -1,5 +1,3 @@
-// Online Java Compiler (Editor)
-// Write and run Java online using this editor.
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +70,12 @@ class Main {
         return lines.toArray(new String[0]);
     }
 
+    /**
+     * Take raw CDK terminal service daily log RO parts list copy and paste String array collected
+     * from input and convert into Parts array
+     * @param lines
+     * @return Parts array of all parts extracted
+     */
     public static Part[] getPartsCDK(String[] lines)
     {
         // parse lines into part data classes
@@ -107,33 +111,15 @@ class Main {
             // load into Part class
             Part newPart = new Part(partName, partQuantity, partTotalPrice);
             Part.addPart(newPart, parts);
-            /*boolean duplicate = false;
-            if(i == 0)
-            {
-                parts[partArrayIndex++] = new Part(partName, partQuantity, partTotalPrice);
-            }*/
-
-
-            /*for(j = 0; j < i; ++j)
-            {
-                if(newPart.equals(parts[j]))
-                {
-                    parts[j].quantity += newPart.quantity;
-                    parts[j].totalPrice += newPart.totalPrice;
-                    duplicate = true;
-                }
-            }
-            if(!duplicate)
-                parts[partArrayIndex++] = new Part(partName, partQuantity, partTotalPrice);*/
         }
 
         return parts.toArray(new Part[0]);
     }
 
     /**
-     * Get the parts from stratus raw copy/paste input
+     * Take raw Stratus website copy and paste String array collected from input and convert into Parts array
      * @param lines
-     * @return
+     * @return Parts array of all parts extracted
      */
     public static Part[] getPartsStratus(String[] lines)
     {
@@ -170,6 +156,11 @@ class Main {
     }
 }
 
+/**
+ * Represents a part with part name (part number), quantity, and price and related methods
+ * @author John Morgan Wight
+ * @version 1.0
+ */
 class Part
 {
     String partName;
@@ -182,11 +173,18 @@ class Part
         this.totalPrice = totalPrice;
     }
 
+    /**
+     * Print the part to console as text
+     */
     public void printPart()
     {
         System.out.printf("%-12s\t%2d\t$%6.2f\n", partName, quantity, totalPrice);
     }
 
+    /**
+     * Print an array of parts to console as text.
+     * @param parts Array of parts to print
+     */
     public static void printParts(Part[] parts)
     {
         System.out.println("Parts\tQuantity\tPrice");
@@ -219,16 +217,51 @@ class Part
         return diffPart;
     }
 
-    public boolean equals(Part part2)
+    /**
+     * Tests if partName inside this part and the part being compared are the same
+     * @param otherPart The other part we want to compare if it has the same name
+     * @return
+     */
+    public boolean equals(Part otherPart)
     {
-        if(part2 == null)
+        if(otherPart == null)
             return false;
 
-        return partName.equals(part2.partName);
+        return partName.equals(otherPart.partName);
     }
 
-    // generates a Part array of all Parts with matching name and difference in quantity and price
-    protected static Part[] intersectionDiff(Part[] firstPartArr, Part[] secondPartArr) {
+    /**
+     * Adds the part to the given parts list. If the part is already in the
+     * given list, it adds the quantity and totalPrice of the matching part
+     * in the list.
+     * @param partToAdd Part you would like to add to the list
+     * @param partsList List of parts you would like to add it to.
+     * @return  returns false if part was already in the list and true if it
+     * is a new part.
+     */
+    public static boolean addPart(Part partToAdd, List<Part> partsList)
+    {
+        for(Part partElement : partsList)
+        {
+            if(partToAdd.equals(partElement))
+            {
+                partElement.quantity += partToAdd.quantity;
+                partElement.totalPrice += partToAdd.totalPrice;
+                return false;
+            }
+        }
+        partsList.add(partToAdd);
+        return true;
+    }
+
+    /**
+     * Generates a Part array of all Parts with matching name and difference in
+     * quantity and price.
+     * @param firstPartArr  set A
+     * @param secondPartArr set B
+     * @return                  Array of all parts (A ∩ B) intersecting on partName
+     */
+    public static Part[] intersectionDiff(Part[] firstPartArr, Part[] secondPartArr) {
         List<Part> partDiff = new LinkedList<Part>();
 
         int i, j;
@@ -266,11 +299,59 @@ class Part
         return partDiff.toArray(new Part[0]);
     }
 
-    protected static Part[] nonZeroIntersectionDiff(Part[] firstPartArr, Part[] secondPartArr)
+    /**
+     * Generates a Part array of all Parts with matching name and difference in
+     * quantity and price.
+     * @param firstPartList  set A
+     * @param secondPartList set B
+     * @return                  List of all parts (A ∩ B) intersecting on partName
+     */
+    public static List<Part> intersectionDiff(List<Part> firstPartList, List<Part> secondPartList)
+    {
+        List<Part> partDiff = new LinkedList<Part>();
+
+        int i, j;
+
+        // iterate through the shortest list. Cross out
+        List<Part> shortList = firstPartList.size() < secondPartList.size() ?
+                firstPartList : secondPartList; // shortest list to iterate through
+
+        List<Part> longList = firstPartList.size() > secondPartList.size() ?
+                firstPartList : secondPartList; // shortest list to iterate through
+
+        // keep a Linked List we can keep removing elements we already matched from other list, will make it faster
+        List<Integer> longPartIndexList = new LinkedList<Integer>();
+        // make linked list of other list we can cross out to make faster
+        for (i = 0; i < longList.size(); ++i)
+            longPartIndexList.add(i);
+
+        int longPartIndexListIndex;
+        for (i = 0; i < shortList.size(); ++i) {
+            for (j = 0; j < longPartIndexList.size(); ++j) {
+                longPartIndexListIndex = longPartIndexList.get(j);
+                if (shortList.get(i).partName.equals(longList.get(longPartIndexListIndex).partName)) {
+                    Part diffPart = shortList.get(i).minus(longList.get(longPartIndexListIndex));
+                    partDiff.add(diffPart);
+                    // remove that index on linked list so we don't have to check it again for match, we already matched it
+                    longPartIndexList.remove(j);
+                    break;
+                }
+            }
+        }
+
+        return partDiff;
+    }
+
+    /**
+     * Generates a Part array of all Parts with matching name and difference in
+     * quantity and price.
+     * @param intersectionDiff  Array of Set of parts (A ∩ B) intersecting on partName
+     * @return                  Array of all parts (A ∩ B) where quantity > 0 and totalPrice > 0
+     */
+    public static Part[] nonZeroIntersectionDiff(Part[] intersectionDiff)
     {
         List<Part> nonZeroPartDiffList = new LinkedList<Part>();
-        Part[] diffPartArr = intersectionDiff(firstPartArr, secondPartArr);
-        for(Part partElement : diffPartArr)
+        for(Part partElement : intersectionDiff)
         {
             if(partElement.totalPrice != 0 && partElement.quantity != 0)
                 nonZeroPartDiffList.add(partElement);
@@ -279,21 +360,30 @@ class Part
         return nonZeroPartDiffList.toArray(new Part[0]);
     }
 
-    static boolean addPart(Part partToAdd, List<Part> partsList)
+    /**
+     * Generates a Part array of all Parts with matching name and difference in
+     * quantity and price.
+     * @param intersectionDiff  List of Set of parts (A ∩ B) intersecting on partName
+     * @return  List of all parts (A ∩ B) intersecting on partName where quantity > 0 and totalPrice > 0
+     */
+    public static List<Part> nonZeroIntersectionDiff(List<Part> intersectionDiff)
     {
-        for(Part partElement : partsList)
+        List<Part> nonZeroPartDiffList = new LinkedList<Part>();
+        for(Part partElement : intersectionDiff)
         {
-            if(partToAdd.equals(partElement))
-            {
-                partElement.quantity += partToAdd.quantity;
-                partElement.totalPrice += partToAdd.totalPrice;
-                return false;
-            }
+            if(partElement.totalPrice != 0 && partElement.quantity != 0)
+                nonZeroPartDiffList.add(partElement);
         }
-        partsList.add(partToAdd);
-        return true;
+
+        return nonZeroPartDiffList;
     }
 
+    /**
+     * Remove the partToRemove from partsList
+     * @param partToRemove  Part to remove from the list
+     * @param partsList     List to remove it from
+     * @return              True if part was successfully found and removed. False if it was not found.
+     */
     public static boolean removePart(Part partToRemove, List<Part> partsList)
     {
         int i;
@@ -305,8 +395,56 @@ class Part
         }
         return false;
     }
+
+    /**
+     * Makes an array containing the set A - (A ∩ B)
+     * @param setA  set A
+     * @param setB  set B
+     * @param intersectionAB    set (A ∩ B) intersecting on partName
+     * @return  A - (A ∩ B) on partName
+     */
+    public static Part[] setDifference(List<Part> setA, List<Part> setB, List<Part> intersectionAB)
+    {
+        List<Integer> indexListSetA = new LinkedList<Integer>();
+        List<Integer> indexListSetB = new LinkedList<Integer>();
+        Part[] setDifference;
+        int i, j;
+
+        for(i = 0; i < setB.size(); ++i)
+            indexListSetB.add(i);
+
+        for(i = 0; i < setA.size(); ++i)
+        {
+            Part setAElement = setA.get(i);
+            boolean matchFound = false;
+            for(j = 0; j < indexListSetB.size(); ++j)
+            {
+                Part intersectionSetElement = intersectionAB.get(indexListSetB.get(j));
+                if(intersectionSetElement.equals(setAElement))
+                {
+                    indexListSetB.remove(j);
+                    matchFound = true;
+                    break;
+                }
+            }
+            if(!matchFound)
+            {
+                indexListSetA.add(i);
+            }
+        }
+
+        // generate parts numbers from index that are left on setA
+        setDifference = new Part[indexListSetA.size()];
+        for(i = 0; i < indexListSetA.size(); ++i)
+        {
+            setDifference[i] = setA.get(indexListSetA.get(i));
+        }
+
+        return setDifference;
+    }
 }
 
+//TODO: come up with a better name for this class
 class PartsStructure
 {
     private List<Part> cdkList;
@@ -359,22 +497,36 @@ class PartsStructure
         return added;
     }
 
-    public boolean removeCDKPart(Part partToRemove, List<Part> partsList)
+    /**
+     * Removes a given part from CDK Parts list
+     * @param partToRemove  Part to remove from CDK Parts list
+     * @return  true if part found and removed, false if part not found in list
+     */
+    public boolean removeCDKPart(Part partToRemove)
     {
+        listUpdated = true;
         return Part.removePart(partToRemove, cdkList);
     }
 
-    public boolean removeStratusPart(Part partToRemove, List<Part> partsList)
+    /**
+     * Removes a given part from CDK Parts list
+     * @param partToRemove  Part to remove from CDK Parts list
+     * @return  true if part found and removed, false if part not found in list
+     */
+    public boolean removeStratusPart(Part partToRemove)
     {
+        listUpdated = true;
         return Part.removePart(partToRemove, stratusList);
     }
 
-    // generates a Part array of all Parts with matching name and difference in quantity and price
-    protected List<Part> intersectionDiff()
+    /**
+     * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList)
+     * @return  (cdkPartsList ∩ stratusPartsList)
+     */
+    protected List<Part> intersectionDiff() //intersectionDiff(List<Part> firstPartList, List<Part> secondPartList)
     {
         if(listUpdated || intersectionDiff == null) {
-
-            List<Part> partDiff = new LinkedList<Part>();
+            /*List<Part> partDiff = new LinkedList<Part>();
 
             int i, j;
 
@@ -406,76 +558,53 @@ class PartsStructure
             }
 
             intersectionDiff = partDiff;
+            return partDiff;*/
             listUpdated = false;
-            return partDiff;
+            return intersectionDiff = Part.intersectionDiff(stratusList, cdkList);
         }
         else
             return intersectionDiff;
 
     }
 
+    /**
+     * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList) non-zero
+     * @return  (cdkPartsList ∩ stratusPartsList) where quantity > 0 and totalPrice > 0
+     */
     public Part[] nonZeroIntersectionDiff()
     {
         intersectionDiff();
-        List<Part> nonZeroPartDiffList = new LinkedList<Part>();
-        for(Part partElement : intersectionDiff)
-        {
-            if(partElement.totalPrice != 0 && partElement.quantity != 0)
-                nonZeroPartDiffList.add(partElement);
-        }
-
-        return nonZeroPartDiffList.toArray(new Part[0]);
+        return Part.nonZeroIntersectionDiff(intersectionDiff.toArray(new Part[0]));
     }
 
+    /**
+     * Makes an array containing the set cdkList - (cdkList ∩ stratusList)
+     * @return  Array containing set cdkList - (cdkList ∩ stratusList)
+     */
     public Part[] cdkSetDifference()
     {
         intersectionDiff();
         return setDifference(cdkList, intersectionDiff);
     }
 
+    /**
+     * Makes an array containing the set stratusList - (stratusList ∩ cdkList)
+     * @return  Array containing set stratusList - (stratusList ∩ cdkList)
+     */
     public Part[] stratusSetDifference()
     {
         intersectionDiff();
         return setDifference(stratusList, intersectionDiff);
     }
 
+    /**
+     * Makes an array containing the set A - (A ∩ B)
+     * @param setA  set A (either stratusList or cdkList)
+     * @param setB  set B (either cdkList or stratusList)
+     * @return  A - (A ∩ B) on partName
+     */
     private Part[] setDifference(List<Part> setA, List<Part> setB)
     {
-        List<Integer> indexListSetA = new LinkedList<Integer>();
-        List<Integer> indexListSetB = new LinkedList<Integer>();
-        Part[] setDifference;
-        int i, j;
-
-        for(i = 0; i < setB.size(); ++i)
-            indexListSetB.add(i);
-
-        for(i = 0; i < setA.size(); ++i)
-        {
-            Part setAElement = setA.get(i);
-            boolean matchFound = false;
-            for(j = 0; j < indexListSetB.size(); ++j)
-            {
-                Part intersectionSetElement = intersectionDiff.get(indexListSetB.get(j));
-                if(intersectionSetElement.equals(setAElement))
-                {
-                    indexListSetB.remove(j);
-                    matchFound = true;
-                    break;
-                }
-            }
-            if(!matchFound)
-            {
-                indexListSetA.add(i);
-            }
-        }
-
-        // generate parts numbers from index that are left on setA
-        setDifference = new Part[indexListSetA.size()];
-        for(i = 0; i < indexListSetA.size(); ++i)
-        {
-            setDifference[i] = setA.get(indexListSetA.get(i));
-        }
-
-        return setDifference;
+        return Part.setDifference(setA, setB, intersectionDiff);
     }
 }
