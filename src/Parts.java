@@ -1,0 +1,87 @@
+package src;
+import src.Part;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Parts extends ArrayList<Part> implements List<Part>
+{
+
+    /**
+     * Adds the part to the given parts list. If the part is already in the
+     * given list, it adds the quantity and totalPrice of the matching part
+     * in the list.
+     * @param partToAdd Part you would like to add to the list
+     * @return  returns false if part was already in the list and true if it
+     * is a new part.
+     */
+    @Override
+    public boolean add(Part partToAdd)
+    {
+        for(Part partElement : this)
+        {
+            if(partToAdd.equals(partElement))
+            {
+                partElement.quantity += partToAdd.quantity;
+                partElement.totalPrice += partToAdd.totalPrice;
+                return false;
+            }
+        }
+        super.add(partToAdd);
+        return true;
+    }
+
+    /**
+     * Remove the partToRemove from partsList
+     * @param partToRemove  Part to remove from the list
+     * @return              True if part was successfully found and removed. False if it was not found.
+     */
+    public boolean remove(Part partToRemove)
+    {
+        int i;
+        for(i = 0; i < this.size(); ++i) {
+            if (get(i).equals(partToRemove)) {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int indexOf(Part partToFind)
+    {
+        return indexOf(partToFind.partName);
+    }
+
+    public int indexOf(String partNameToFind)
+    {
+        int i;
+        for(i = 0; i < size(); ++i)
+        {
+            if(get(i).partName == partNameToFind)
+                return i;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(String partNameToFind)
+    {
+        int i;
+        for(i = size() - 1; i >= 0; --i)
+        {
+            if(get(i).partName == partNameToFind)
+                return i;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(Part partToFind)
+    {
+        return lastIndexOf(partToFind.partName);
+    }
+
+    //TODO: add comparators for part quantity, part total price and part name
+    public boolean contains(String partNameToSearch)
+    {
+        return indexOf(partNameToSearch) != -1;
+    }
+}
