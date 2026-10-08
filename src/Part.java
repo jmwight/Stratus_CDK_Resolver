@@ -79,30 +79,6 @@ public class Part
     }
 
     /**
-     * Adds the part to the given parts list. If the part is already in the
-     * given list, it adds the quantity and totalPrice of the matching part
-     * in the list.
-     * @param partToAdd Part you would like to add to the list
-     * @param partsList List of parts you would like to add it to.
-     * @return  returns false if part was already in the list and true if it
-     * is a new part.
-     */
-    public static boolean addPart(Part partToAdd, List<Part> partsList)
-    {
-        for(Part partElement : partsList)
-        {
-            if(partToAdd.equals(partElement))
-            {
-                partElement.quantity += partToAdd.quantity;
-                partElement.totalPrice += partToAdd.totalPrice;
-                return false;
-            }
-        }
-        partsList.add(partToAdd);
-        return true;
-    }
-
-    /**
      * Generates a Part array of all Parts with matching name and difference in
      * quantity and price.
      * @param firstPartArr  set A
@@ -224,24 +200,6 @@ public class Part
         }
 
         return nonZeroPartDiffList;
-    }
-
-    /**
-     * Remove the partToRemove from partsList
-     * @param partToRemove  Part to remove from the list
-     * @param partsList     List to remove it from
-     * @return              True if part was successfully found and removed. False if it was not found.
-     */
-    public static boolean removePart(Part partToRemove, List<Part> partsList)
-    {
-        int i;
-        for(i = 0; i < partsList.size(); ++i) {
-            if (partsList.get(i).equals(partToRemove)) {
-                partsList.remove(i);
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
