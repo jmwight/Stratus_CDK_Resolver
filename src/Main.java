@@ -1,11 +1,11 @@
+package src;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
-import src.*;
 
-package src;
 
 class Main {
     public static void main(String[] args) {
@@ -16,7 +16,7 @@ class Main {
         // get CDK Part array
         System.out.println("Enter CDK Parts:");
         lines = getLines(scnr);
-        Part[] partsCDK = getPartsCDK(lines);
+        Parts partsCDK = getPartsCDK(lines);
         //System.out.println("Processed CDK Parts List:");
         //System.out.println();
         //Part.printParts(partsCDK);
@@ -24,17 +24,18 @@ class Main {
         // get Stratus Part Array
         System.out.println("Enter Stratus Parts:");
         lines = getLines(scnr);
-        Part[] partsStratus = getPartsStratus(lines);
+        Parts partsStratus = getPartsStratus(lines);
         //System.out.println("Processed Stratus Parts List:");
         //System.out.println();
         //Part.printParts(partsStratus);
 
-        PartsStructure partsStructure = new PartsStructure(partsCDK, partsStratus);
+        PartsListComparator partsStructure = new PartsListComparator(partsCDK, partsStratus);
 
 
         Part[] intersections = partsStructure.nonZeroIntersectionDiff();
-        Part[] cdkDifference = partsStructure.cdkSetDifference();
-        Part[] stratusDifference = partsStructure.stratusSetDifference();
+        // NOTE: partsList1 = cdk, partsList2 = stratus
+        Part[] cdkDifference = partsStructure.partsList1SetDifference();
+        Part[] stratusDifference = partsStructure.partsList2SetDifference();
 
         // print the difference on parts in both lists
         System.out.println("Processed Stratus Parts Difference:");
@@ -79,7 +80,7 @@ class Main {
      * @param lines
      * @return Parts array of all parts extracted
      */
-    public static Part[] getPartsCDK(String[] lines)
+    public static Parts getPartsCDK(String[] lines)
     {
         // parse lines into part data classes
         String partName;
@@ -92,7 +93,7 @@ class Main {
         int i, j;
         //int partArrayIndex = 0;
         //Part[] parts = new Part[lines.length];
-        List<Part> parts = new ArrayList<Part>();
+        Parts parts = new Parts(lines.length + 5);
 
         for(i = 0; i < lines.length; ++i)
         {
@@ -113,10 +114,10 @@ class Main {
 
             // load into Part class
             Part newPart = new Part(partName, partQuantity, partTotalPrice);
-            Part.addPart(newPart, parts);
+            parts.add(newPart);
         }
 
-        return parts.toArray(new Part[0]);
+        return parts;
     }
 
     /**
@@ -124,7 +125,7 @@ class Main {
      * @param lines
      * @return Parts array of all parts extracted
      */
-    public static Part[] getPartsStratus(String[] lines)
+    public static Parts getPartsStratus(String[] lines)
     {
         String partName;
         double partTotalPrice;
@@ -135,7 +136,7 @@ class Main {
         String partPriceStr;
         String partTotalPriceStr;
         int i;
-        Part[] parts = new Part[lines.length];
+        Parts parts = new Parts(lines.length + 5);
 
         for(i = 0; i < lines.length; ++i)
         {
@@ -152,7 +153,7 @@ class Main {
             partTotalPriceStr = lines[i].substring(lines[i].lastIndexOf('\t') + 2);
             partTotalPrice = Double.parseDouble(partTotalPriceStr);
 
-            parts[i] = new Part(partName, partQuantity, partTotalPrice);
+            parts.add(new Part(partName, partQuantity, partTotalPrice));
         }
 
         return parts;

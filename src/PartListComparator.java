@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //TODO: come up with a better name for this class
-class PartListComparator
+class PartsListComparator
 {
     private Parts partsList1;
     private Parts partsList2;
@@ -13,13 +13,13 @@ class PartListComparator
     private boolean listUpdated = true;
 
     /* constructors */
-    PartListComparator()
+    PartsListComparator()
     {
         this.partsList1 = new Parts();
         this.partsList2 = new Parts();
     }
 
-    PartListComparator(Parts partsList1, Parts partsList2)
+    PartsListComparator(Parts partsList1, Parts partsList2)
     {
         this.partsList1 = partsList1;
         this.partsList2 = partsList2;
@@ -42,11 +42,11 @@ class PartListComparator
         listUpdated = true;
     }
 
-    PartListComparator(Part[] partsArray1, Part[] partsArray2)
+    PartsListComparator(Part[] partsArray1, Part[] partsArray2)
     {
         this.partsList1 = new Parts(Arrays.asList(partsArray1));
         this.partsList2 = new Parts(Arrays.asList(partsArray2));
-        intersectionDiff();
+        listUpdated = true;
     }
 
     /**

@@ -5,11 +5,14 @@ import java.util.List;
 
 public class Parts extends ArrayList<Part> implements List<Part>
 {
+    private static final int INITIAL_CAPACITY = 40;
 
     public Parts()
     {
-        super();
+        super(INITIAL_CAPACITY);
     }
+
+    public Parts(int initCapacity) {super(initCapacity);}
 
     public Parts(List<Part> parts)
     {
