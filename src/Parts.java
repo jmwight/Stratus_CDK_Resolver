@@ -92,9 +92,26 @@ public class Parts extends ArrayList<Part> implements List<Part>
         return lastIndexOf(partToFind.partName);
     }
 
-    //TODO: add comparators for part quantity, part total price and part name
     public boolean contains(String partNameToSearch)
     {
         return indexOf(partNameToSearch) != -1;
     }
+
+    /**
+     * Print an array of parts to console as text.
+     */
+    public void printAll()
+    {
+        int i;
+
+        System.out.println("Parts\tQuantity\tPrice");
+        for(Part part : this)
+        {
+            System.out.printf("%-12s\t%2d\t$%6.2f\n", part.partName, part.quantity, part.totalPrice);
+        }
+
+        System.out.println();
+    }
+
+    //TODO: add comparators for part quantity, part total price and part name
 }

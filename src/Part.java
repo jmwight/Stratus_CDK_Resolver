@@ -33,7 +33,7 @@ public class Part
      * Print an array of parts to console as text.
      * @param parts Array of parts to print
      */
-    public static void printParts(Part[] parts)
+    /*public static void printParts(Part[] parts)
     {
         System.out.println("Parts\tQuantity\tPrice");
         for(Part part : parts)
@@ -42,7 +42,7 @@ public class Part
         }
 
         System.out.println();
-    }
+    }*/
 
     /**
      * Part must have same partName! Returns part difference in quantity and totalPrice.
@@ -130,7 +130,7 @@ public class Part
      * @param secondPartList set B
      * @return                  List of all parts (A ∩ B) intersecting on partName
      */
-    public static List<Part> intersectionDiff(List<Part> firstPartList, List<Part> secondPartList)
+    /*public static List<Part> intersectionDiff(List<Part> firstPartList, List<Part> secondPartList)
     {
         List<Part> partDiff = new LinkedList<Part>();
 
@@ -164,7 +164,7 @@ public class Part
         }
 
         return partDiff;
-    }
+    }*/
 
     /**
      * Generates a Part array of all Parts with matching name and difference in
@@ -172,7 +172,7 @@ public class Part
      * @param intersectionDiff  Array of Set of parts (A ∩ B) intersecting on partName
      * @return                  Array of all parts (A ∩ B) where quantity > 0 and totalPrice > 0
      */
-    public static Part[] nonZeroIntersectionDiff(Part[] intersectionDiff)
+    /*public static Part[] nonZeroIntersectionDiff(Part[] intersectionDiff)
     {
         List<Part> nonZeroPartDiffList = new LinkedList<Part>();
         for(Part partElement : intersectionDiff)
@@ -182,7 +182,7 @@ public class Part
         }
 
         return nonZeroPartDiffList.toArray(new Part[0]);
-    }
+    }*/
 
     /**
      * Generates a Part array of all Parts with matching name and difference in
@@ -190,7 +190,7 @@ public class Part
      * @param intersectionDiff  List of Set of parts (A ∩ B) intersecting on partName
      * @return  List of all parts (A ∩ B) intersecting on partName where quantity > 0 and totalPrice > 0
      */
-    public static List<Part> nonZeroIntersectionDiff(List<Part> intersectionDiff)
+    /*public static List<Part> nonZeroIntersectionDiff(List<Part> intersectionDiff)
     {
         List<Part> nonZeroPartDiffList = new LinkedList<Part>();
         for(Part partElement : intersectionDiff)
@@ -200,7 +200,7 @@ public class Part
         }
 
         return nonZeroPartDiffList;
-    }
+    }*/
 
     /**
      * Makes an array containing the set A - (A ∩ B)
@@ -209,7 +209,7 @@ public class Part
      * @param intersectionAB    set (A ∩ B) intersecting on partName
      * @return  A - (A ∩ B) on partName
      */
-    public static Part[] setDifference(List<Part> setA, List<Part> setB, List<Part> intersectionAB)
+    /*public static Part[] setDifference(List<Part> setA, List<Part> setB, List<Part> intersectionAB)
     {
         List<Integer> indexListSetA = new LinkedList<Integer>();
         List<Integer> indexListSetB = new LinkedList<Integer>();
@@ -247,5 +247,5 @@ public class Part
         }
 
         return setDifference;
-    }
+    }*/
 }

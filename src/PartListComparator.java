@@ -99,7 +99,7 @@ class PartsListComparator
      * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList)
      * @return  (cdkPartsList ∩ stratusPartsList)
      */
-    protected List<Part> intersectionDiff() //intersectionDiff(List<Part> partsList1, List<Part> partsList2)
+    protected Parts intersectionDiff() //intersectionDiff(List<Part> partsList1, List<Part> partsList2)
     {
         if(listUpdated || intersectionDiff == null)
         {
@@ -152,17 +152,23 @@ class PartsListComparator
      * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList) non-zero
      * @return  (cdkPartsList ∩ stratusPartsList) where quantity > 0 and totalPrice > 0
      */
-    public Part[] nonZeroIntersectionDiff()
+    public Parts nonZeroIntersectionDiff()
     {
         intersectionDiff();
-        return Part.nonZeroIntersectionDiff(intersectionDiff.toArray(new Part[0]));
+        Parts zeroIntersectionDiff = new Parts(intersectionDiff.size());
+        for(Part part : intersectionDiff)
+        {
+            if(part.quantity != 0 || part.totalPrice != 0.0)
+                zeroIntersectionDiff.add(part);
+        }
+        return zeroIntersectionDiff;
     }
 
     /**
      * Makes an array containing the set cdkList - (cdkList ∩ stratusList)
      * @return  Array containing set cdkList - (cdkList ∩ stratusList)
      */
-    public Part[] partsList1SetDifference()
+    public Parts partsList1SetDifference()
     {
         intersectionDiff();
         return setDifference(partsList1, intersectionDiff);
@@ -172,7 +178,7 @@ class PartsListComparator
      * Makes an array containing the set stratusList - (stratusList ∩ cdkList)
      * @return  Array containing set stratusList - (stratusList ∩ cdkList)
      */
-    public Part[] partsList2SetDifference()
+    public Parts partsList2SetDifference()
     {
         intersectionDiff();
         return setDifference(partsList2, intersectionDiff);
@@ -184,8 +190,45 @@ class PartsListComparator
      * @param setB  set B (either cdkList or stratusList)
      * @return  A - (A ∩ B) on partName
      */
-    private Part[] setDifference(List<Part> setA, List<Part> setB)
+    private Parts setDifference(List<Part> setA, List<Part> setB)
     {
-        return Part.setDifference(setA, setB, intersectionDiff);
+        //return Part.setDifference(setA, setB, intersectionDiff);
+
+        List<Integer> indexListSetA = new LinkedList<Integer>();
+        List<Integer> indexListSetB = new LinkedList<Integer>();
+        Parts setDifference;
+        int i, j;
+
+        for(i = 0; i < setB.size(); ++i)
+            indexListSetB.add(i);
+
+        for(i = 0; i < setA.size(); ++i)
+        {
+            Part setAElement = setA.get(i);
+            boolean matchFound = false;
+            for(j = 0; j < indexListSetB.size(); ++j)
+            {
+                Part intersectionSetElement = intersectionDiff.get(indexListSetB.get(j));
+                if(intersectionSetElement.equals(setAElement))
+                {
+                    indexListSetB.remove(j);
+                    matchFound = true;
+                    break;
+                }
+            }
+            if(!matchFound)
+            {
+                indexListSetA.add(i);
+            }
+        }
+
+        // generate parts numbers from index that are left on setA
+        setDifference = new Parts(indexListSetA.size());
+        for(i = 0; i < indexListSetA.size(); ++i)
+        {
+            setDifference.add(setA.get(indexListSetA.get(i)));
+        }
+
+        return setDifference;
     }
 }
