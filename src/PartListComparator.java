@@ -26,26 +26,42 @@ class PartsListComparator
         listUpdated = true;
     }
 
+    PartsListComparator(Part[] partsArray1, Part[] partsArray2)
+    {
+        this.partsList1 = new Parts(Arrays.asList(partsArray1));
+        this.partsList2 = new Parts(Arrays.asList(partsArray2));
+        listUpdated = true;
+    }
+
+    /**
+     * Gets partsList1 in class
+     * @return partsList1
+     */
     public Parts getPartsList1() {return partsList1;}
 
+    /**
+     * Gets partsList2 in class
+     * @return partsList2
+     */
     public Parts getPartsList2() {return partsList2;}
 
+    /**
+     * Change the Parts partsList1 to another Parts list
+     * @param partsList1 new Parts partsList1
+     */
     public void setPartsList1(Parts partsList1)
     {
         this.partsList1 = partsList1;
         listUpdated = true;
     }
 
+    /**
+     * Change the Parts partsList1 to another Parts list
+     * @param partsList2 new Parts partsList1
+     */
     public void setPartsList2(Parts partsList2)
     {
         this.partsList2 = partsList2;
-        listUpdated = true;
-    }
-
-    PartsListComparator(Part[] partsArray1, Part[] partsArray2)
-    {
-        this.partsList1 = new Parts(Arrays.asList(partsArray1));
-        this.partsList2 = new Parts(Arrays.asList(partsArray2));
         listUpdated = true;
     }
 
@@ -95,21 +111,16 @@ class PartsListComparator
         return partsList2.remove(partToRemove);
     }
 
+
     /**
-     * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList)
-     * @return  (cdkPartsList ∩ stratusPartsList)
+     * Generates a Parts list of all Parts with matching name and a difference in
+     * quantity and price.
+     * @return               List of all parts (A ∩ B) intersecting on partName and their difference in quantity and price
      */
-    protected Parts intersectionDiff() //intersectionDiff(List<Part> partsList1, List<Part> partsList2)
+    protected Parts intersectionDiff()
     {
         if(listUpdated || intersectionDiff == null)
         {
-            /**
-             * Generates a Part array of all Parts with matching name and difference in
-             * quantity and price.
-             * @param partsList1  set A
-             * @param partsList2 set B
-             * @return                  List of all parts (A ∩ B) intersecting on partName
-             */
             List<Part> partDiff = new LinkedList<Part>();
 
             int i, j;
@@ -150,7 +161,7 @@ class PartsListComparator
 
     /**
      * Gets the intersection if updated  of (cdkPartsList ∩ stratusPartsList) non-zero
-     * @return  (cdkPartsList ∩ stratusPartsList) where quantity > 0 and totalPrice > 0
+     * @return  (partsList1 ∩ partsList2) where quantity > 0 and totalPrice > 0
      */
     public Parts nonZeroIntersectionDiff()
     {

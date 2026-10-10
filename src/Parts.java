@@ -60,33 +60,48 @@ public class Parts extends ArrayList<Part> implements List<Part>
         return false;
     }
 
-    public int indexOf(Part partToFind)
-    {
-        return indexOf(partToFind.partName);
-    }
-
+    /**
+     * Get the last index of a given part.
+     * @param partNameToFind    Part to find (the part of the matching name)
+     * @return              Index in Parts
+     */
     public int indexOf(String partNameToFind)
     {
         int i;
         for(i = 0; i < size(); ++i)
         {
-            if(get(i).partName == partNameToFind)
+            if(get(i).partName.equals(partNameToFind))
                 return i;
         }
         return -1;
     }
 
+    public int indexOf(Part partToFind)
+    {
+        return indexOf(partToFind.partName);
+    }
+
+    /**
+     * Get the last index of a given part.
+     * @param partNameToFind    Part name string to find (the part of the matching name)
+     * @return                  Index in Parts
+     */
     public int lastIndexOf(String partNameToFind)
     {
         int i;
         for(i = size() - 1; i >= 0; --i)
         {
-            if(get(i).partName == partNameToFind)
+            if(get(i).partName.equals(partNameToFind))
                 return i;
         }
         return -1;
     }
 
+    /**
+     * Get the index of a given part.
+     * @param partToFind    Part to find (the part of the matching name)
+     * @return              Index in Parts
+     */
     public int lastIndexOf(Part partToFind)
     {
         return lastIndexOf(partToFind.partName);
@@ -98,7 +113,7 @@ public class Parts extends ArrayList<Part> implements List<Part>
     }
 
     /**
-     * Print an array of parts to console as text.
+     * Print all parts in Parts to console as text.
      */
     public void printAll()
     {
