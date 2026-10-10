@@ -11,9 +11,9 @@ import java.util.LinkedList;
 
 public class Part
 {
-    String partName;
-    int quantity;
-    double totalPrice;
+    public String partName;
+    public int quantity;
+    public double totalPrice;
     Part(String partName, int quantity, double totalPrice)
     {
         this.partName = partName;

@@ -6,6 +6,16 @@ import java.util.List;
 public class Parts extends ArrayList<Part> implements List<Part>
 {
 
+    public Parts()
+    {
+        super();
+    }
+
+    public Parts(List<Part> parts)
+    {
+        super(parts);
+    }
+
     /**
      * Adds the part to the given parts list. If the part is already in the
      * given list, it adds the quantity and totalPrice of the matching part
