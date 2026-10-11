@@ -1,12 +1,13 @@
-package src;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * A special class that contains two lists, can perform special operations to
  * find the differences between them, and manage those lists
+ * @author John Morgan Wight
+ * @version 2.0
  */
 public class PartsListComparator
 {

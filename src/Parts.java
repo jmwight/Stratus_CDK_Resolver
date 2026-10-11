@@ -1,10 +1,10 @@
-package src;
-import src.Part;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A List container that has modifications specifically for the Part class
+ * @author John Morgan Wight
+ * @version 2.0
  */
 public class Parts extends ArrayList<Part> implements List<Part>
 {

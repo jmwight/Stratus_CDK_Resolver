@@ -1,17 +1,11 @@
-/**
- * Represents a part with part name (part number), quantity, and price and related methods
- * @author John Morgan Wight
- * @version 1.0
- */
-
-package src;
 
 import java.util.List;
 import java.util.LinkedList;
 
 /**
- * A container class with some useful methods to hold information pertinent
- * to a part
+ * Represents a part with part name (part number), quantity, and price and related methods
+ * @author John Morgan Wight
+ * @version 2.0
  */
 public class Part
 {
