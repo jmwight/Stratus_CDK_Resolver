@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import java.util.Scanner;
 
 public class StratusCDKResolverGUI {
     private final String PROGRAM_NAME = "Stratus_CDK_Resolver";
@@ -50,6 +51,28 @@ public class StratusCDKResolverGUI {
     public static void main(String args[])
     {
         StratusCDKResolverGUI gui = new StratusCDKResolverGUI();
+    }
+
+    public void calculateDiff()
+    {
+        String cdkPartsRawText, stratusPartsRawText;
+        String[] cdkPartsTextLines, stratusPartsTextLines;
+        Parts cdkParts, stratusParts;
+
+
+        cdkPartsRawText = cdkTextBox.getText();
+        stratusPartsRawText = stratusTextBox.getText();
+
+        Scanner cdkScnr = new Scanner(cdkPartsRawText);
+        Scanner stratusScnr = new Scanner(stratusPartsRawText);
+
+        cdkPartsTextLines = Main.getLines(cdkScnr);
+        stratusPartsTextLines = Main.getLines(stratusScnr);
+
+        cdkParts = Main.getPartsCDK(cdkPartsTextLines);
+        stratusParts = Main.getPartsStratus(stratusPartsTextLines);
+
+
     }
 
 }
