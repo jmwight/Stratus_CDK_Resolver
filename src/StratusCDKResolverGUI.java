@@ -7,30 +7,31 @@ import javax.swing.JLabel;
 
 public class StratusCDKResolverGUI {
     private final String PROGRAM_NAME = "Stratus_CDK_Resolver";
+    private JFrame window;
+    private JPanel panel;
+    private BoxLayout layout;
+    private JTextArea stratusTextBox, cdkTextBox, outputTextBox;
+    private JLabel stratusTextLabel, cdkTextLabel, outputTextLabel;
+    private JButton calculateButton;
 
     public StratusCDKResolverGUI()
     {
         // create a window and add stuff to it
-        JFrame window = new JFrame(PROGRAM_NAME);
+        window = new JFrame(PROGRAM_NAME);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel panel = new JPanel();
-        BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+        panel = new JPanel();
+        layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         panel.setLayout(layout);
-
-        // create components
-        JTextArea stratusTextBox, cdkTextBox, outputTextBox;
-        JLabel stratusTextLabel, cdkTextLabel, outputTextLabel;
-        JButton calculateButton;
 
         // instantiate all components
         stratusTextBox = new JTextArea();
         cdkTextBox = new JTextArea();
         outputTextBox = new JTextArea();
         outputTextBox.setEditable(false);
-        stratusTextLabel = new JLabel("Enter Stratus Parts:", JLabel.CENTER);
-        cdkTextLabel = new JLabel("Enter CDK Parts:", JLabel.CENTER);
+        stratusTextLabel = new JLabel("Enter Stratus Parts:");
+        cdkTextLabel = new JLabel("Enter CDK Parts:", JLabel.LEFT);
         calculateButton = new JButton("Calculate");
-        outputTextLabel = new JLabel("Output:", JLabel.CENTER);
+        outputTextLabel = new JLabel("Output:", JLabel.LEFT);
 
         // add all components to panel
         panel.add(stratusTextLabel);
