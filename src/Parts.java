@@ -141,15 +141,26 @@ public class Parts extends ArrayList<Part> implements List<Part>
 	 */
 	public void printAll()
 	{
-		int i;
-
-		System.out.println("Parts\tQuantity\tPrice");
+		System.out.println(printAllString());
+		/*System.out.println("Parts\tQuantity\tPrice");
 		for(Part part : this)
 		{
 			System.out.printf("%-12s\t%2d\t$%6.2f\n", part.partName, part.quantity, part.totalPrice);
 		}
 
-		System.out.println();
+		System.out.println();*/
+	}
+
+	public String printAllString()
+	{
+		String printString = "";
+		printString += "Parts\tQuantity\tPrice\n";
+		for(Part part : this)
+		{
+			printString += String.format("%-12s\t%2d\t$%6.2f\n", part.partName, part.quantity, part.totalPrice);
+		}
+
+		return printString;
 	}
 
 	//TODO: add comparators for part quantity, part total price and part name

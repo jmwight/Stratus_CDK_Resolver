@@ -5,8 +5,10 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.util.Scanner;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class StratusCDKResolverGUI {
+public class StratusCDKResolverGUI implements ActionListener {
     private final String PROGRAM_NAME = "Stratus_CDK_Resolver";
     private JFrame window;
     private JPanel panel;
@@ -43,6 +45,10 @@ public class StratusCDKResolverGUI {
         panel.add(outputTextBox);
         panel.add(calculateButton);
 
+	   // create ActionEvent and add to calculate button
+	   calculateButton.addActionListener(this);
+
+	   // create window and open it
         window.add(panel);
         window.setSize(1000, 1000);
         window.setVisible(true);
@@ -53,9 +59,15 @@ public class StratusCDKResolverGUI {
         StratusCDKResolverGUI gui = new StratusCDKResolverGUI();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+	    calculateDiff();
+    }
+
     public void calculateDiff()
     {
-        String cdkPartsRawText, stratusPartsRawText;
+        String cdkPartsRawText, stratusPartsRawText, outputString;
         String[] cdkPartsTextLines, stratusPartsTextLines;
         Parts cdkParts, stratusParts;
 
@@ -72,7 +84,31 @@ public class StratusCDKResolverGUI {
         cdkParts = Main.getPartsCDK(cdkPartsTextLines);
         stratusParts = Main.getPartsStratus(stratusPartsTextLines);
 
+	   PartsListComparator partsStructure = new PartsListComparator(cdkParts, stratusParts);
+	   
+	   Parts intersections = partsStructure.nonZeroIntersectionDiff();
+	   // NOTE: partsList1 = cdk, partsList2 = stratus
+	   Parts cdkDifference = partsStructure.partsList1SetDifference();
+        Parts stratusDifference = partsStructure.partsList2SetDifference();
 
+	   outputString = "";
+
+        // print the difference on parts in both lists
+        outputString += "Processed Stratus Parts Difference:";
+        outputString += intersections.printAllString();
+	   outputString += "\n";
+
+        // print the parts on CDK not on Stratus
+        outputString += "CDK Set Difference:";
+        outputString += cdkDifference.printAllString();
+        outputString += "\n";
+
+        // print the parts on Stratus not on CDK
+        outputString += "Stratus Set Difference:";
+        outputString += stratusDifference.printAllString();
+        outputString += "\n";
+
+	   outputTextBox.setText(outputString);
     }
 
 }
