@@ -63,12 +63,20 @@ class Main {
 		String line = "";
 
 		// read through all lines
-		line = scnr.nextLine().trim();
+
+		while(scnr.hasNextLine())
+		{
+			line = scnr.nextLine().trim();
+			if(line.charAt(0) == '^')
+				break;
+			lines.add(line);
+		}
+		/*line = scnr.nextLine().trim();
 		while(line.charAt(0) != '^')
 		{
 			lines.add(line);
 			line = scnr.nextLine().trim();
-		}
+		}*/
 
 		return lines.toArray(new String[0]);
 	}
