@@ -13,8 +13,8 @@ public class StratusCDKResolverGUI implements ActionListener {
     private JFrame window;
     private JPanel panel;
     private BoxLayout layout;
-    private JTextArea stratusTextBox, cdkTextBox, outputTextBox;
-    private JLabel stratusTextLabel, cdkTextLabel, outputTextLabel;
+    private JTextArea cdkTextBox, stratusTextBox, outputTextBox;
+    private JLabel cdkTextLabel, stratusTextLabel, outputTextLabel;
     private JButton calculateButton;
 
     public StratusCDKResolverGUI()
@@ -27,8 +27,8 @@ public class StratusCDKResolverGUI implements ActionListener {
         panel.setLayout(layout);
 
         // instantiate all components
-        stratusTextBox = new JTextArea();
         cdkTextBox = new JTextArea();
+        stratusTextBox = new JTextArea();
         outputTextBox = new JTextArea();
         outputTextBox.setEditable(false);
         stratusTextLabel = new JLabel("Enter Stratus Parts:");
@@ -37,10 +37,10 @@ public class StratusCDKResolverGUI implements ActionListener {
         outputTextLabel = new JLabel("Output:", JLabel.LEFT);
 
         // add all components to panel
-        panel.add(stratusTextLabel);
-        panel.add(stratusTextBox);
         panel.add(cdkTextLabel);
         panel.add(cdkTextBox);
+        panel.add(stratusTextLabel);
+        panel.add(stratusTextBox);
         panel.add(outputTextLabel);
         panel.add(outputTextBox);
         panel.add(calculateButton);
